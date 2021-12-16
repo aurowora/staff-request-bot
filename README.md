@@ -19,6 +19,8 @@ bot_prefix: "~"
 mongo_database: "staff-requests"
 ```
 
+You can create a token in the Discord developer portal if you don't already have one. The bot needs the `Message Content` intent, the `Server Members` intent, and the `Presence Update` intent (the last two are not strictly necessary, but are required for the help command to display correctly per the framework). 
+
 ### Usage
 
 Given `~` as the bot prefix, a new request board can be configured like so (where # prefixed names are channel mentions and @ prefixed names are role mentions):
