@@ -80,19 +80,6 @@ impl EventHandler for Bot {
             }
         };
 
-        // Check if the member reacting is a part of the manager group
-
-        let mut in_role = false;
-        for role_id in rxn_member.roles {
-            if role_id.to_string() == channel_pair.manager_role {
-                in_role = true;
-            }
-        }
-
-        if !in_role {
-            return;
-        }
-
         // Fetch the actual message
         let message = match ctx.http.get_message(*rxn.channel_id.as_u64(), *rxn.message_id.as_u64()).await {
             Ok(message) => message,
@@ -100,6 +87,20 @@ impl EventHandler for Bot {
                 return;
             }
         };
+
+        // Check if the member reacting is a part of the manager group
+
+        let mut in_role = rxn_user.id == message.author.id; // Alternatively, users may mark their own requests as completed / unnecessary
+        for role_id in rxn_member.roles {
+            if role_id.to_string() == channel_pair.manager_role {
+                in_role = true;
+                break;
+            }
+        }
+
+        if !in_role {
+            return;
+        }
 
         //Send our message to the archive channel
         let _ = archive_id.send_message(&ctx, |m| {
