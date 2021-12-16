@@ -124,9 +124,7 @@ impl EventHandler for Bot {
                     .icon_url({
                         // Serenity gives us a size 1024 avatar, which ends up blurring most avatars
                         // size 24 happens to look perfect
-                        let avatar = &message.author.avatar;
-
-                        if avatar.is_none() {
+                        if message.author.avatar.is_none() {
                             message.author.default_avatar_url()
                         } else {
                             format!("https://cdn.discordapp.com/avatars/{}/{}.png?size=24", message.author.id.0, message.author.avatar.unwrap())
