@@ -33,6 +33,11 @@ A request board can be removed like so if and when it is no longer desired:
 
 ~removeBoard #requests
 
+#### Missing Features
+
+- Attachments are not archived when a message is moved to #archive
+- There is minimal logging currently
+
 ### License
 
 This package is released under the terms of the MIT license. Please see LICENSE.txt for more information.
