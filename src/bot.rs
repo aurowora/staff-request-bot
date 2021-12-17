@@ -150,7 +150,7 @@ impl EventHandler for Bot {
                 .field("Closed By", &format!("{}", rxn_user), true)
                 .field("Thread", {
                     if message_flags & MessageFlags::HAS_THREAD == MessageFlags::HAS_THREAD {
-                        format!("{}", ChannelId(*message.id.as_u64()))
+                        format!("{}", ChannelId(*message.id.as_u64()).mention())
                     } else {
                         "None".to_string()
                     }
