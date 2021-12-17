@@ -29,8 +29,13 @@ impl EventHandler for Bot {
         if channel_pair.is_none() {return;}
         // Past this point, we do have a channel pair for this message
 
-        let _ = msg.react(&ctx, '✅').await;
-        let _ = msg.react(&ctx, '❌').await;
+        // If it's a thread created message, delete it instead of reacting
+        if msg.kind == MessageType::ThreadCreated {
+            let _ = msg.delete(&ctx);
+        } else {
+            let _ = msg.react(&ctx, '✅').await;
+            let _ = msg.react(&ctx, '❌').await;
+        }
     }
 
     async fn reaction_add(&self, ctx: Context, rxn: Reaction) {
