@@ -31,7 +31,7 @@ impl EventHandler for Bot {
 
         // If it's a thread created message, delete it instead of reacting
         if msg.kind == MessageType::ThreadCreated {
-            let _ = msg.channel_id.delete_message(&ctx, msg.id);
+            let _ = msg.channel_id.delete_message(&ctx, msg.id).await;
         } else {
             let _ = msg.react(&ctx, '✅').await;
             let _ = msg.react(&ctx, '❌').await;
