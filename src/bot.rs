@@ -102,6 +102,21 @@ impl EventHandler for Bot {
             return;
         }
 
+        // Archive an associated thread if there's anything there
+        let message_flags = match message.flags {
+            Some(flags) => flags,
+            None => {
+                return;
+            }
+        };
+
+        if message_flags & MessageFlags::HAS_THREAD == MessageFlags::HAS_THREAD {
+            let thread_id = ChannelId(*message.id.as_u64()); // threads have the same ids as the message they are based on
+            let _ = thread_id.edit_thread(&ctx, |e| {
+                e.archived(true)
+            }).await;
+        }
+
         //Send our message to the archive channel
         let _ = archive_id.send_message(&ctx, |m| {
             m.embed(|e| {
@@ -132,9 +147,15 @@ impl EventHandler for Bot {
                         }
                     })
                 })
-                .footer(|f| {
-                    f.text(format!("Closed by {}#{:0>4}", rxn_user.name, rxn_user.discriminator))
-                })
+                .field("Closed By", &format!("{}", rxn_user), true)
+                .field("Thread", {
+                    if message_flags & MessageFlags::HAS_THREAD == MessageFlags::HAS_THREAD {
+                        format!("{}", ChannelId(*message.id.as_u64()))
+                    } else {
+                        "None".to_string()
+                    }
+                }, true)
+                .timestamp(message.timestamp)
             })
         }).await;
 

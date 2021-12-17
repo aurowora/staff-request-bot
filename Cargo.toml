@@ -6,6 +6,6 @@ edition = "2021"
 [dependencies]
 serde = { version = "1.0", features = ["derive"]}
 serde_yaml = "0.8"
-serenity = { version = "0.10"}
+serenity = { git = "https://github.com/serenity-rs/serenity.git", rev="04fc541b0e34d0e16c99039ce94cfe3cb79881b8" }
 tokio = { version = "1.15.0", features = ["full"] }
 mongodb = {version = "2.1.0", default-features = false, features = ["snappy-compression", "zstd-compression", "zlib-compression", "tokio-runtime"]}
